@@ -1,0 +1,19 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+.ruff_cache/
+.vscode/
+.DS_Store
+
+# Experiment outputs never belong in the repo.
+experiments/
+outputs/
+*.ckpt
+*.pt
+*.pkl
+*.npz
+lightning_logs/

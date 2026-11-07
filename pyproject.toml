@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fom"
+version = "1.0.0"
+description = "Foresight to Motion: goal-conditioned autoregressive human motion prediction from egocentric video"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "pytorch-lightning>=2.4,<2.5",
+    "yacs",
+    "loguru",
+    "numpy",
+    "scipy",
+    "joblib",
+    "tqdm",
+    "smplx",
+    "tensorboard",
+]
+
+[project.optional-dependencies]
+# Nymeria preprocessing (SMPL-X refit, contact/goal extraction, visual features).
+preprocessing = [
+    "projectaria-tools",
+    "opencv-python",
+    "pillow",
+    "torchvision",
+    "trimesh",
+    "pandas",
+]
+# Running FoM on generated / real videos (poses + depth come from ViPE).
+inference = ["pillow", "torchvision", "opencv-python", "imageio", "av"]
+# Interactive viewers and figure rendering.
+visualization = ["viser", "trimesh", "matplotlib", "imageio", "opencv-python"]
+dev = ["ruff"]
+
+[project.scripts]
+fom-train = "fom.cli.train:main"
+fom-predict = "fom.cli.predict:main"
+fom-eval = "fom.cli.evaluate:main_eval"
+fom-gt = "fom.cli.ground_truth:main"
+fom-summarize = "fom.cli.summarize:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["src/fom/utils/rotation_conversions.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]

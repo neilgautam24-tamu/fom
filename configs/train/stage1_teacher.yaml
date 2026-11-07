@@ -1,0 +1,32 @@
+# Stage I - teacher forcing (paper Sec. 3.4).
+# Stage II is initialized from epoch 299 of this run.
+# DATA.ROOT, TRAIN.EXP_DIR (and INIT_CKPT for later stages) are passed on the command line;
+# see the Training section of the README.
+DATA:
+  WINDOW: 150
+  MOTION_FPS: 15
+  VISUAL_FPS: 5
+  BATCH_SIZE: 64
+  NUM_WORKERS: 2
+MODEL:
+  COND_RGB: true
+  COND_DEPTH: true
+  COND_GOAL: true
+  COND_TRAJ: true
+  # Teacher forcing never uses the rollout, so this only affects evaluation/sampling. The paper's
+  # stage-I numbers (MPJPE 0.606) were produced with the cached rollout.
+  USE_KV_CACHE: true
+  MASKING:
+    TRAJ: 0.5
+TRAIN:
+  FORCING: teacher
+  NUM_EPOCHS: 300
+  LR: 3.0e-5
+  WEIGHT_DECAY: 0.01
+  # Constant learning rate (no step decay).
+  LR_STEP_EPOCHS: 0
+  GLOBAL_ORIENT_WEIGHT: 1.5
+  GLOBAL_TRANS_WEIGHT: 1.5
+  HEADCAM_LOSS_WEIGHT: 0.0
+  NUM_GPUS: 1
+  PRECISION: 32-true
